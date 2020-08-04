@@ -1,48 +1,47 @@
 import React, { Component } from "react";
+
+import { connect } from "react-redux";
 import {
   MdRemoveCircleOutline,
   MdAddCircleOutline,
   MdDelete,
 } from "react-icons/md";
 import { Container, ProductTable, Total } from "./styles.js";
-export default class Cart extends Component {
-  render() {
-    return (
-      <Container>
-        <ProductTable>
-          <thead>
-            <tr>
-              <th></th>
-              <th>PRODUTO</th>
-              <th>QUANTIDADE</th>
-              <th>SUBTOTAL</th>
-            </tr>
-          </thead>
-          <tbody>
+function Cart({ cart }) {
+  return (
+    <Container>
+      <ProductTable>
+        <thead>
+          <tr>
+            <th></th>
+            <th>PRODUTO</th>
+            <th>QUANTIDADE</th>
+            <th>SUBTOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cart.map((product) => (
             <tr>
               <td>
-                <img
-                  src="https://45582.cdn.simplo7.net/static/45582/sku/adidas-tenis-adidas-kanadia-tr7-1591017425972.jpg"
-                  alt="tenis"
-                />
+                <img src={product.image} alt={product.title} />
               </td>
               <td>
-                <strong>Tênis exemplo teste</strong>
-                <span>R$120.90</span>
+                <strong>{product.title}</strong>
+                <span>{product.priceFormated}</span>
               </td>
               <td>
                 <div>
                   <button type="button">
                     <MdRemoveCircleOutline size={20} color="#7159c1" />
                   </button>
-                  <input type="number" readOnly value={1} />
+                  <input type="number" readOnly value={product.amount} />
                   <button type="button">
                     <MdAddCircleOutline size={20} color="#7159c1" />
                   </button>
                 </div>
               </td>
               <td>
-                <strong>R$120.90</strong>
+                <strong>R$2332,00</strong>
               </td>
               <td>
                 <button type="button">
@@ -50,17 +49,23 @@ export default class Cart extends Component {
                 </button>
               </td>
             </tr>
-          </tbody>
-        </ProductTable>
+          ))}
+        </tbody>
+      </ProductTable>
 
-        <footer>
-          <button type="button">finalizar pedido</button>
-          <Total>
-            <span>TOTAL</span>
-            <strong>R$1902,00</strong>
-          </Total>
-        </footer>
-      </Container>
-    );
-  }
+      <footer>
+        <button type="button">finalizar pedido</button>
+        <Total>
+          <span>TOTAL</span>
+          <strong>R$1902,00</strong>
+        </Total>
+      </footer>
+    </Container>
+  );
 }
+
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
+
+export default connect(mapStateToProps)(Cart);
